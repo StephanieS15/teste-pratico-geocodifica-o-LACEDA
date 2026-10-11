@@ -1,0 +1,16 @@
+FROM python:3.10-slim
+
+# Instalar JVM e outras dependências necessárias
+RUN apt-get update && apt-get install -y \
+    default-jre \
+    procps \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Instalar dependências Python
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Manter o container ativo ou executar o script
+CMD ["tail", "-f", "/dev/null"]

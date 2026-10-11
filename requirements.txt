@@ -1,0 +1,7 @@
+pyspark==3.5.0
+elasticsearch==8.11.0
+requests
+pandas
+pyarrow
+jupyterlab
+openpyxl

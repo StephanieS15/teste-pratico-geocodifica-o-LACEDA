@@ -1,0 +1,17 @@
+# Arquivos de dados e volumes
+data/
+.es_data/
+
+# Exceção: Mantém apenas o resultado final CSV
+!data/processado/resultado_geocodificado.csv
+
+# Python & Spark
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+spark-warehouse/
+metastore_db/
+
+# VS Code
+.vscode/

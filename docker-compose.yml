@@ -1,0 +1,44 @@
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: es_cidacs
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+    ports:
+      - "9200:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    networks:
+      - relinke-net
+
+  spark-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.spark
+    container_name: spark_app
+    ports:
+      - "8888:8888"
+    depends_on:
+      - elasticsearch
+    volumes:
+      - .:/app
+    environment:
+      - ELASTICSEARCH_HOST=es_cidacs
+      - ELASTICSEARCH_PORT=9200
+    networks:
+      - relinke-net
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4g
+    command: jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --ServerApp.token='cnefe_token' --ServerApp.password=''
+
+volumes:
+  es_data:
+
+networks:
+  relinke-net:
+    driver: bridge
